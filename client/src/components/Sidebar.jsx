@@ -1,50 +1,57 @@
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-
-import { logo, sun } from '../assets';
+import { logout } from '../assets';
 import { navlinks } from '../constants';
-
-const Icon = ({ styles, name, imgUrl, isActive, disabled, handleClick }) => (
-  <div className={`w-[48px] h-[48px] rounded-[10px] ${isActive && isActive === name && 'bg-[#2c2f32]'} flex justify-center items-center ${!disabled && 'cursor-pointer'} ${styles}`} onClick={handleClick}>
-    {!isActive ? (
-      <img src={imgUrl} alt="fund_logo" className="w-1/2 h-1/2" />
-    ) : (
-      <img src={imgUrl} alt="fund_logo" className={`w-1/2 h-1/2 ${isActive !== name && 'grayscale'}`} />
-    )}
-  </div>
-)
+import favicon from '../assets/favicon.ico';
 
 const Sidebar = () => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState('dashboard');
 
   return (
-    <div className="flex justify-between items-center flex-col sticky top-5 h-[93vh]">
-      <Link to="/">
-        <Icon styles="w-[52px] h-[52px] bg-[#2c2f32]" imgUrl={logo} />
+    <div className="flex flex-col sticky top-5 h-[93vh] w-[220px] bg-[#f0f0f0] rounded-[20px] p-4 shadow-lg">
+      {/* Logo */}
+      <Link
+        to="/"
+        className="flex items-center gap-3 outline-none focus:outline-none"
+      >
+        <img
+          className="w-[42px] h-[42px] rounded-lg"
+          src={favicon}
+          alt="logo"
+        />
+        <span className="text-lg font-semibold text-gray-800">Stack Market</span>
       </Link>
 
-      <div className="flex-1 flex flex-col justify-between items-center bg-[#1c1c24] rounded-[20px] w-[76px] py-4 mt-12">
-        <div className="flex flex-col justify-center items-center gap-3">
+      {/* Navigation */}
+      <div className="flex-1 flex flex-col justify-between mt-12 outline-none focus:outline-none">
+        <div className="flex flex-col gap-3 outline-none focus:outline-none">
           {navlinks.map((link) => (
-            <Icon 
+            <div
               key={link.name}
-              {...link}
-              isActive={isActive}
-              handleClick={() => {
-                if(!link.disabled) {
+              className={`flex items-center gap-3 p-3 rounded-lg cursor-pointer transition-all outline-none focus:outline-none select-none
+                ${isActive === link.name ? 'bg-[#434343] text-white' : 'hover:bg-gray-300 text-gray-700'}`}
+              onClick={() => {
+                if (!link.disabled) {
                   setIsActive(link.name);
                   navigate(link.link);
                 }
               }}
-            />
+            >
+              <img src={link.imgUrl} alt={link.name} className="w-6 h-6" />
+              <span className="text-md font-medium">{link.name.charAt(0).toUpperCase() + link.name.slice(1)}</span>
+            </div>
           ))}
         </div>
 
-        <Icon styles="bg-[#1c1c24] shadow-secondary" imgUrl={sun} />
+        {/* Logout Button */}
+        <div className="flex items-center gap-3 p-3 rounded-lg cursor-pointer bg-[#ffffff] text-black hover:bg-[#434343] hover:text-white transition-all group outline-none focus:outline-none select-none">
+          <img src={logout} alt="logout" className="w-6 h-6 hover:border-l-stone-900 " />
+          <span className="text-md font-medium group-hover:text-white">Logout</span>
+        </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default Sidebar
+export default Sidebar;
