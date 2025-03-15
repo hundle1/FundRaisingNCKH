@@ -1,4 +1,3 @@
-# Its FundingNCKH, i miss click to FungdingNCKH
 
 # Bước đầu :
 hãy chuyển đến Client và Web3 
@@ -18,3 +17,13 @@ chạy lệnh
 npm run dev
 ```
 để có thể khởi động ứng dụng nhé
+
+# bước 4:
+đăng nhập bằng ví metamask và bấm vào tạo chiến dịch là xong
+hãy nhớ là chuyển sang mạng Sepolia nhé
+
+# Bước mở rộng :
+nếu trong ví chưa có ETH thì hãy vào 
+```bash
+https://cloud.google.com/application/web3/faucet/ethereum/sepolia
+```
