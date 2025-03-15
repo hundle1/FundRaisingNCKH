@@ -45,10 +45,12 @@ const Sidebar = () => {
         </div>
 
         {/* Logout Button */}
-        <div className="flex items-center gap-3 p-3 rounded-lg cursor-pointer bg-[#ffffff] text-black hover:bg-[#434343] hover:text-white transition-all group outline-none focus:outline-none select-none">
-          <img src={logout} alt="logout" className="w-6 h-6 hover:border-l-stone-900 " />
-          <span className="text-md font-medium group-hover:text-white">Logout</span>
-        </div>
+        <a href='http://localhost:3000/'>
+          <div className="flex items-center gap-3 p-3 rounded-lg cursor-pointer bg-[#ffffff] text-black hover:bg-[#434343] hover:text-white transition-all group outline-none focus:outline-none select-none">
+            <img src={logout} alt="logout" className="w-6 h-6 hover:border-l-stone-900 " />
+            <span className="text-md font-medium group-hover:text-white">Back to Home</span>
+          </div>
+        </a>
       </div>
     </div>
   );

@@ -1,10 +1,16 @@
 import React from 'react';
-
 import { tagType, thirdweb } from '../assets';
-import { daysLeft } from '../utils';
 
 const FundCard = ({ owner, title, description, target, deadline, amountCollected, image, handleClick }) => {
-  const remainingDays = daysLeft(deadline);
+  const timeLeft = (deadline) => {
+    const now = Math.floor(Date.now() / 1000); // Convert to seconds
+    const timeDiff = deadline - now;
+    if (timeDiff <= 0) return "Expired";
+    const days = Math.floor(timeDiff / (60 * 60 * 24));
+    return `${days}d`;
+  };
+
+  const remainingTime = timeLeft(deadline); // Use the deadline prop directly
 
   return (
     <div
@@ -39,12 +45,12 @@ const FundCard = ({ owner, title, description, target, deadline, amountCollected
               {amountCollected}
             </h4>
             <p className="mt-[3px] font-epilogue font-normal text-[12px] leading-[18px] text-[#94a3b8] sm:max-w-[120px] truncate">
-              Raised of {target}
+              Raised of {target / 1e18} ETH {/* Convert from wei to ether */}
             </p>
           </div>
           <div className="flex flex-col">
             <h4 className="font-epilogue font-semibold text-[14px] text-[#00000078] leading-[22px]">
-              {remainingDays}
+              {remainingTime}
             </h4>
             <p className="mt-[3px] font-epilogue font-normal text-[12px] leading-[18px] text-[#94a3b8] sm:max-w-[120px] truncate">
               Days Left
@@ -63,8 +69,7 @@ const FundCard = ({ owner, title, description, target, deadline, amountCollected
         </div>
       </div>
     </div>
+  );
+};
 
-  )
-}
-
-export default FundCard
+export default FundCard;

@@ -24,7 +24,7 @@ export const StateContextProvider = ({ children }) => {
       setSdk(ThirdwebSDK.fromSigner(signer, "sepolia"));
     }
   }, [signer]);
-  const contractAddress = "0xBCCFf1352954DB6acD335B9c2491613855cbBc0a";
+  const contractAddress = "0xC22Aff07689968e7aB48Ae2C5647cdaef83A134e";
   const [contract, setContract] = useState(null);
 
   useEffect(() => {
@@ -60,14 +60,19 @@ export const StateContextProvider = ({ children }) => {
       console.error("Wallet is not connected!");
       return;
     }
+  
     try {
-      // Gọi phương thức contract trực tiếp
+      const targetString = form.target.toString(); // Đảm bảo là string
+      const targetInWei = ethers.utils.parseEther(targetString); // Chuyển đổi chính xác
+      const deadlineInSeconds = Math.floor(new Date(form.deadline).getTime() / 1000);
+  
       const data = await contract.call("createCampaign", [
         address,
         form.title,
         form.description,
-        ethers.utils.parseUnits(form.target.toString(), 18),
-        new Date(form.deadline).getTime(),
+        form.ipfsHashId,
+        targetInWei, // Đã đảm bảo đúng format
+        deadlineInSeconds,
         form.image,
       ]);
   
@@ -77,25 +82,26 @@ export const StateContextProvider = ({ children }) => {
     }
   };
   
-  
-  
 
 
   const getCampaigns = async () => {
     if (!contract) return [];
+  
     const campaigns = await contract.call("getCampaigns");
-
+  
     return campaigns.map((campaign, i) => ({
       owner: campaign.owner,
       title: campaign.title,
       description: campaign.description,
-      target: ethers.utils.formatUnits(campaign.target, 18),
-      deadline: campaign.deadline.toNumber(),
-      amountCollected: ethers.utils.formatUnits(campaign.amountCollected, 18),
+      ipfsHashId: campaign.ipfsHashId,
+      target: ethers.utils.formatEther(campaign.target),
+      deadline: campaign.deadline.toNumber(), // Giữ nguyên dạng số epoch
+      amountCollected: ethers.utils.formatEther(campaign.amountCollected),
       image: campaign.image,
       pId: i,
     }));
   };
+  
 
   const getUserCampaigns = async () => {
     const allCampaigns = await getCampaigns();

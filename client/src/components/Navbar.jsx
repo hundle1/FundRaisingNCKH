@@ -1,6 +1,5 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-
 import { useStateContext } from '../context';
 import { CustomButton } from './';
 import { logo, menu, search, thirdweb } from '../assets';
@@ -10,13 +9,21 @@ const Navbar = () => {
   const navigate = useNavigate();
   const [isActive, setIsActive] = useState('dashboard');
   const [toggleDrawer, setToggleDrawer] = useState(false);
-  const { connect, address } = useStateContext();
+  const {connect, address } = useStateContext();
+  const [userCampaigns, setUserCampaigns] = useState([]);
+  const [avatar, setAvatar] = useState("");
+
+  useEffect(() => {
+          if (address) {
+              setAvatar(`https://api.dicebear.com/7.x/identicon/svg?seed=${address}`);
+          }
+      }, [address]);
 
   return (
     <div className="flex md:flex-row flex-col-reverse justify-between mb-[35px] gap-6">
       <div className="lg:flex-1 flex flex-row max-w-[458px] py-2 pl-4 pr-2 h-[52px] bg-[#b7b7b7] rounded-[100px]">
         <input type="text" placeholder="Search for campaigns" className="flex w-full font-epilogue font-normal text-[14px] placeholder:text-[#000000] text-white bg-transparent outline-none" />
-        <div className="w-[72px] h-full rounded-[20px] bg-[#47c085] flex justify-center items-center cursor-pointer">
+        <div className="w-[72px] h-full rounded-[20px] bg-[#1dc071] flex justify-center items-center cursor-pointer">
           <img src={search} alt="search" className="w-[15px] h-[15px] object-contain"/>
         </div>
       </div>
@@ -31,9 +38,7 @@ const Navbar = () => {
           }}
         />
         <Link to="/profile">
-          <div className="w-[52px] h-[52px] rounded-full bg-[#2c2f32] flex justify-center items-center cursor-pointer">
-            <img src={thirdweb} alt="user" className="w-[60%] h-[60%] object-contain" />
-          </div>
+          <img src={avatar} alt="Avatar" className="w-[52px] h-[52px] rounded-full border border-gray-300" />
         </Link>
       </div>
       {/* Small screen navigation */}

@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import { ChainId, ThirdwebProvider } from '@thirdweb-dev/react';
-
+import { ToastContainer } from "react-toastify";
 import { StateContextProvider } from './context';
 import App from './App';
 import './index.css';
@@ -15,6 +15,7 @@ root.render(
   >
     <Router>
       <StateContextProvider>
+        <ToastContainer />
         <App />
       </StateContextProvider>
     </Router>

@@ -15,6 +15,7 @@ const CreateCampaign = () => {
     name: '',
     title: '',
     description: '',
+    ipfsHashId: '', // Thêm trường ipfsHashId
     target: '', 
     deadline: '',
     image: ''
@@ -30,34 +31,37 @@ const CreateCampaign = () => {
     checkIfImage(form.image, async (exists) => {
       if(exists) {
         setIsLoading(true)
-        await createCampaign({ ...form, target: ethers.utils.parseUnits(form.target, 18)})
+        await createCampaign({ 
+          ...form, 
+          target: ethers.utils.parseUnits(form.target, 18)
+        });
         setIsLoading(false);
         navigate('/');
       } else {
-        alert('Provide valid image URL')
+        alert('Provide valid image URL');
         setForm({ ...form, image: '' });
       }
     })
   }
 
   return (
-    <div className="bg-[#1c1c24] flex justify-center items-center flex-col rounded-[10px] sm:p-10 p-4">
+    <div className="bg-[#f0f0f0] flex justify-center items-center flex-col rounded-xl sm:p-10 p-4 shadow-lg border border-gray-300">
       {isLoading && <Loader />}
-      <div className="flex justify-center items-center p-[16px] sm:min-w-[380px] bg-[#3a3a43] rounded-[10px]">
-        <h1 className="font-epilogue font-bold sm:text-[25px] text-[18px] leading-[38px] text-white">TẠO CHIẾN DỊCH MỚI</h1>
+      <div className="flex justify-center items-center p-[16px] sm:min-w-[380px] bg-[#a4a5a5] rounded-lg shadow-md border">
+        <h1 className="font-epilogue font-bold sm:text-[25px] text-[18px] leading-[38px] text-white">Create a New Campaign</h1>
       </div>
 
       <form onSubmit={handleSubmit} className="w-full mt-[65px] flex flex-col gap-[30px]">
         <div className="flex flex-wrap gap-[40px]">
           <FormField 
-            labelName="Tên của bạn *"
+            labelName="Your Name *"
             placeholder="John Doe"
             inputType="text"
             value={form.name}
             handleChange={(e) => handleFormFieldChange('name', e)}
           />
           <FormField 
-            labelName="Tiêu đề chiến dịch *"
+            labelName="Campaign Title *"
             placeholder="Write a title"
             inputType="text"
             value={form.title}
@@ -66,23 +70,31 @@ const CreateCampaign = () => {
         </div>
 
         <FormField 
-            labelName="Mô tả chiến dịch *"
+            labelName="Campaign Description *"
             placeholder="Write your story"
             isTextArea
             value={form.description}
             handleChange={(e) => handleFormFieldChange('description', e)}
           />
 
+        <FormField 
+            labelName="IPFS Hash ID *"
+            placeholder="Enter IPFS Hash ID"
+            inputType="text"
+            value={form.ipfsHashId}
+            handleChange={(e) => handleFormFieldChange('ipfsHashId', e)}
+          />
+
         <div className="flex flex-wrap gap-[40px]">
           <FormField 
-            labelName="Số kinh phí mong muốn *"
+            labelName="Desired Funding *"
             placeholder="ETH 0.50"
             inputType="text"
             value={form.target}
             handleChange={(e) => handleFormFieldChange('target', e)}
           />
           <FormField 
-            labelName="Ngày kết thúc chiến dịch *"
+            labelName="Campaign End Date *"
             placeholder="End Date"
             inputType="date"
             value={form.deadline}
@@ -91,7 +103,7 @@ const CreateCampaign = () => {
         </div>
 
         <FormField 
-            labelName="Hình ảnh mô tả *"
+            labelName="Image URL *"
             placeholder="Place image URL of your campaign"
             inputType="url"
             value={form.image}
@@ -101,14 +113,14 @@ const CreateCampaign = () => {
           <div className="flex justify-center items-center mt-[40px]">
             <CustomButton 
               btnType="submit"
-              title="Tạo chiến dịch"
-              styles="bg-[#1dc071]"
+              title="Create Campaign"
+              styles="bg-[#34D399]"
             />
           </div>
 
-          <div className="w-full flex justify-start items-center p-4 bg-[#8c6dfd] h-[120px] rounded-[10px]">
+          <div className="w-full flex justify-start items-center p-4 bg-[#7F9CF5] h-[120px] rounded-lg shadow-md border border-[#5D3FD3]">
             <img src={money} alt="money" className="w-[40px] h-[40px] object-contain"/>
-            <h4 className="font-epilogue font-bold text-[25px] text-white ml-[20px]">Bạn sẽ nhận được 100% kinh phí mong muốn ban đầu</h4>
+            <h4 className="font-epilogue font-bold text-[25px] text-white ml-[20px]">You will receive 100% of your desired funding goal</h4>
           </div>
       </form>
     </div>
